@@ -1,0 +1,3 @@
+*.sh
+fastApi-modules/
+__pycache__
