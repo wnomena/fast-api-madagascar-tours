@@ -9,7 +9,6 @@ def Get_all_Circuit(engine,callback):
     with Session(engine) as session:
         try:
             data_joined = select(Circuit,Itinerary,Equipement,Included_task_in_Price).outerjoin(Circuit.itinerary).outerjoin(Circuit.equipment_needed).outerjoin(Circuit.included_in_price)
-            print(data_joined)
             data = session.execute(data_joined).all()
             final_value_to_return:list[Reterned_Circuit] = []
             for a,b,c,d in data:
@@ -20,5 +19,4 @@ def Get_all_Circuit(engine,callback):
                 final_value_to_return.append(Reterned_Circuit(id=ciruit["id"],title=ciruit["title"],subtitle=ciruit["subtitle"],description=ciruit["description"],duration=ciruit["duration"],difficulty=ciruit["difficulty"],price=ciruit["price"],image=ciruit["image"],itinerary = [Itinerary_Model(id=itinarary["id"],place=itinarary["place"],order_id=itinarary["order_id"],circuit_id=itinarary["circuit_id"])],equipment = [Equipement_Model(id=equipement["id"],equipment=equipement["equipment"],circuit_id=equipement["circuit_id"])],include_in_price = [Included_task_in_Price_Model(id=included["id"],content=included["content"],circuit_id=included["circuit_id"])]))
             callback(Result_model_function(code=1,data=final_value_to_return,error=""))
         except Exception as Error:
-            print(Error)
             callback(Result_model_function(code=0,data=[],error=Error))

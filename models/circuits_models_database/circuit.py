@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase,Mapped,mapped_column,relationship
 class Base(DeclarativeBase):
@@ -101,7 +102,14 @@ class Contact(Base):
     number_of_person:Mapped[int] = mapped_column(Integer,nullable=True)
     circuit_id:Mapped[int] = mapped_column(Integer,ForeignKey("circuit.id"),nullable=True) 
     circuit = relationship("Circuit",back_populates="contact")
-#class for rendering contact to client
+
+class Contact_Model(BaseModel):
+    name:str
+    subject:str
+    body:str
+    number:str | None
+    begining:str | None
+    number_of_person:int |None
 
 
     
