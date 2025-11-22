@@ -7,8 +7,9 @@ from sqlalchemy import create_engine
 
 
 from Controller.Circuit_controller.returned_circuit_manager import Group_element_to_simpllify_render, Reterned_Circuit
-from models.circuits_models_database.circuit import Contact_Model
+from models.circuits_models_database.circuit import Contact, Contact_Model
 from models.circuits_models_for_endpoint.Get_all_circuits import Get_all_Circuit
+from models.circuits_models_for_endpoint.Set_contact import set_full_contact
 from models.circuits_models_for_endpoint.transverse_models import Result_model_function
 
 #configuration 
@@ -35,4 +36,12 @@ def read_root():
 
 @app.post("/")
 def set_contact(Form:Annotated[Contact_Model,Form()]):
-    return 1
+    try:
+        result:Result_model_function = set_full_contact(engine,Form=Form)
+        if result.code:
+            print(result.code)
+            return result
+        else :
+            raise HTTPException(status_code=500,detail=result.error)
+    except Exception as err:
+        raise HTTPException(status_code=500,detail=err)

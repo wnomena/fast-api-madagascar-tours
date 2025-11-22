@@ -98,6 +98,7 @@ class Contact(Base):
     subject:Mapped[str] = mapped_column(String,nullable=False)
     body:Mapped[str] = mapped_column(String,nullable=False)
     number:Mapped[str] = mapped_column(String,nullable=True)
+    mail:Mapped[str] = mapped_column(String(250),nullable=False)
     begining:Mapped[str] = mapped_column(String,nullable=True)
     number_of_person:Mapped[int] = mapped_column(Integer,nullable=True)
     circuit_id:Mapped[int] = mapped_column(Integer,ForeignKey("circuit.id"),nullable=True) 
@@ -107,9 +108,10 @@ class Contact_Model(BaseModel):
     name:str
     subject:str
     body:str
-    number:str | None
-    begining:str | None
-    number_of_person:int |None
+    mail:str
+    number:str | None = None
+    begining:str | None = None
+    number_of_person:int | None = None
 
 
     
