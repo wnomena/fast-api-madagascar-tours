@@ -103,29 +103,5 @@ class Contact(Base):
     circuit = relationship("Circuit",back_populates="contact")
 #class for rendering contact to client
 
-class Reterned_Circuit:
-    def __init__(self,id:int,
-    title:str,
-    subtitle:str,
-    duration:str,
-    description:str,
-    difficulty:int,
-    price:int,
-    image:str,
-    itinerary:list[Itinerary_Model],
-    equipment:list[Equipement_Model],
-    include_in_price:list[Included_task_in_Price_Model]):
-        self.id = id
-        self.title = title
-        self.subtitle = subtitle
-        self.duration = duration
-        self.description = description
-        self.difficulty = difficulty
-        self.price = price
-        self.image = image
-        self.itinerary = itinerary
-        self.equipment = equipment
-        self.include_in_price = include_in_price
-        
-        
+
     

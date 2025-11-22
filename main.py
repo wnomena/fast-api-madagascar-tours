@@ -4,6 +4,7 @@ import dotenv
 from fastapi import FastAPI, HTTPException
 from sqlalchemy import create_engine
 
+from Controller.Circuit_controller.returned_circuit_manager import Group_element_to_simpllify_render, Reterned_Circuit
 from models.circuits_models_for_endpoint.Get_all_circuits import Get_all_Circuit
 from models.circuits_models_for_endpoint.transverse_models import Result_model_function
 
@@ -16,19 +17,20 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():   
-    data_from_database:list = []
-    def callback(x:Result_model_function):
-        if x["code"]:
-            for element in x["data"]:
-                if element not in data_from_database:
-                    data_from_database.append(element)
-        else:
-            print(x["error"])
-            raise HTTPException(status_code=500,detail="Something went wrong in database") 
-    Get_all_Circuit(engine,callback)
-    return data_from_database
-
-
+    try:
+        data_from_database:list[Reterned_Circuit] = []
+        def callback(x:Result_model_function):
+            if x.code:
+                for element_to_append in Group_element_to_simpllify_render([data for data in x.data]):
+                    data_from_database.append(element_to_append)
+                    print(element_to_append)
+            elif x.code == 0:
+                print(x.error)
+        Get_all_Circuit(engine,callback)
+        return data_from_database
+    except HTTPException as Err:
+        print(Err)
+        raise HTTPException(status_code=500,detail=Err)
 @app.get("/get_one/{item_id}")
 async def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}

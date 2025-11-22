@@ -1,8 +1,10 @@
-import json
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from models.circuits_models_database.circuit import Circuit, Circuit_Model, Equipement, Equipement_Model, Included_task_in_Price, Included_task_in_Price_Model, Itinerary, Itinerary_Model, Reterned_Circuit
+from models.circuits_models_database.circuit import Circuit, Equipement, Equipement_Model, Included_task_in_Price, Included_task_in_Price_Model, Itinerary, Itinerary_Model
+from Controller.Circuit_controller.returned_circuit_manager import Reterned_Circuit
+from models.circuits_models_for_endpoint.transverse_models import Result_model_function
 def Get_all_Circuit(engine,callback):
     with Session(engine) as session:
         try:
@@ -15,15 +17,8 @@ def Get_all_Circuit(engine,callback):
                 itinarary = b.__dict__
                 equipement = c.__dict__
                 included = d.__dict__
-                final_value_to_return.append(Reterned_Circuit(id=ciruit["id"],title=ciruit["title"],subtitle=ciruit["subtitle"],description=ciruit["description"],duration=ciruit["duration"],difficulty=ciruit["difficulty"],price=ciruit["price"],image=ciruit["image"],itinerary = Itinerary_Model(id=itinarary["id"],place=itinarary["place"],order_id=itinarary["order_id"],circuit_id=itinarary["circuit_id"]),equipment = Equipement_Model(id=equipement["id"],equipment=equipement["equipment"],circuit_id=equipement["circuit_id"]),include_in_price = Included_task_in_Price_Model(id=included["id"],content=included["content"],circuit_id=included["circuit_id"])))
-            callback({
-                "data" : final_value_to_return,
-                "code" : 1,
-                "error" : ""
-            })
+                final_value_to_return.append(Reterned_Circuit(id=ciruit["id"],title=ciruit["title"],subtitle=ciruit["subtitle"],description=ciruit["description"],duration=ciruit["duration"],difficulty=ciruit["difficulty"],price=ciruit["price"],image=ciruit["image"],itinerary = [Itinerary_Model(id=itinarary["id"],place=itinarary["place"],order_id=itinarary["order_id"],circuit_id=itinarary["circuit_id"])],equipment = [Equipement_Model(id=equipement["id"],equipment=equipement["equipment"],circuit_id=equipement["circuit_id"])],include_in_price = [Included_task_in_Price_Model(id=included["id"],content=included["content"],circuit_id=included["circuit_id"])]))
+            callback(Result_model_function(code=1,data=final_value_to_return,error=""))
         except Exception as Error:
-            callback({
-                "data" : [],
-                "code" : 0,
-                "error" : Error
-            })
+            print(Error)
+            callback(Result_model_function(code=0,data=[],error=Error))
