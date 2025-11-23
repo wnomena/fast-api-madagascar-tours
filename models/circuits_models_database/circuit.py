@@ -90,6 +90,22 @@ class Included_task_in_Price_Model:
         self.content = content
         self.circuit_id = circuit_id
 
+class Adrenaline(Base):
+    __tablename__= "adrenaline"
+    id:Mapped[int] = mapped_column(Integer,primary_key=True)
+    content:Mapped[str] = mapped_column(String,nullable=False)
+    circuit_id:Mapped[int] = mapped_column(Integer,ForeignKey("circuit.id"))
+    circuit = relationship("Circuit",back_populates="adrenaline")
+
+class Adrenaline_Model:
+    def __init__(self,id:int,
+    content:str,
+    circuit_id:int):
+        self.id = id
+        self.content = content
+        self.circuit_id = circuit_id
+
+
 
 class Contact(Base):
     __tablename__ = "contact"

@@ -1,5 +1,5 @@
 
-from models.circuits_models_database.circuit import Equipement_Model, Included_task_in_Price_Model, Itinerary_Model
+from models.circuits_models_database.circuit import Equipement_Model, Included_task_in_Price_Model, Itinerary_Model,Adrenaline_Model
 
 def know_index(element:list,id:int):
     for a in range(0,len(element)):
@@ -18,6 +18,7 @@ class Reterned_Circuit:
     image:str,
     itinerary:list[Itinerary_Model],
     equipment:list[Equipement_Model],
+    adrenaline:list[Adrenaline_Model],
     include_in_price:list[Included_task_in_Price_Model]):
         self.id = id
         self.title = title
@@ -29,6 +30,7 @@ class Reterned_Circuit:
         self.image = image
         self.itinerary = itinerary
         self.equipment = equipment
+        self.adrenaline = adrenaline
         self.include_in_price = include_in_price
 
     def __repr__(self):
@@ -89,6 +91,15 @@ class Reterned_Circuit:
                 self.include_in_price.append(params_element)
                 return 1
 
+    def Insert_into_Adrenaline(self,itinerarire:list[Adrenaline_Model]):
+        for params_element in itinerarire:
+            for element in self.adrenaline:
+                if element.id == params_element.id:
+                    return 0
+            if know_index(self.adrenaline,element.id) == (len(self.adrenaline) - 1) and element.id != params_element.id:
+                self.adrenaline.append(params_element)
+                return 1
+
 
 
 def Group_element_to_simpllify_render(i:list[Reterned_Circuit]) -> list[Reterned_Circuit]:
@@ -102,6 +113,8 @@ def Group_element_to_simpllify_render(i:list[Reterned_Circuit]) -> list[Reterned
                     params_value.Insert_into_Equipement(params_element.equipment)
                     params_value.Insert_into_Itinerary(params_element.itinerary)
                     params_value.Insert_into_Included(params_element.include_in_price)
+                    params_value.Insert_into_Adrenaline(params_element.adrenaline)
+                    
                 elif know_index(value,params_value.id) == (len(value) - 1) and know_index(i,params_element.id) == (len(i) - 1) and params_element.id != params_value.id:
                     value.append(params_element)
     return value
