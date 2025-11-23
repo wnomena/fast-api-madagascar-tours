@@ -19,6 +19,7 @@ class Circuit(Base):
     equipment_needed = relationship("Equipement",back_populates="circuit")
     included_in_price = relationship("Included_task_in_Price",back_populates="circuit")
     contact = relationship("Contact",back_populates="circuit")
+    adrenaline = relationship("Adrenaline",back_populates="circuit")
 
 class Circuit_Model:
     def __init__(self,id:int,
@@ -111,12 +112,13 @@ class Contact(Base):
     __tablename__ = "contact"
     id:Mapped[int] = mapped_column(Integer,primary_key=True)
     name:Mapped[str] = mapped_column(String,nullable=False)
-    subject:Mapped[str] = mapped_column(String,nullable=False)
+    subject:Mapped[str] = mapped_column(String,nullable=True)
     body:Mapped[str] = mapped_column(String,nullable=False)
     number:Mapped[str] = mapped_column(String,nullable=True)
     mail:Mapped[str] = mapped_column(String(250),nullable=False)
     begining:Mapped[str] = mapped_column(String,nullable=True)
     number_of_person:Mapped[int] = mapped_column(Integer,nullable=True)
+    total_price:Mapped[int] = mapped_column(Integer,nullable=True)
     circuit_id:Mapped[int] = mapped_column(Integer,ForeignKey("circuit.id"),nullable=True) 
     circuit = relationship("Circuit",back_populates="contact")
 
@@ -128,6 +130,7 @@ class Contact_Model(BaseModel):
     number:str | None = None
     begining:str | None = None
     number_of_person:int | None = None
+    total_price:int | None = None
 
 
     

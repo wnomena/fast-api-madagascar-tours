@@ -39,7 +39,6 @@ def set_contact(Form:Annotated[Contact_Model,Form()]):
     try:
         result:Result_model_function = set_full_contact(engine,Form=Form)
         if result.code:
-            print(result.code)
             return result
         else :
             raise HTTPException(status_code=500,detail=result.error)
