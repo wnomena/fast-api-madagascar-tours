@@ -20,4 +20,5 @@ def Get_all_Circuit(engine,callback):
                 final_value_to_return.append(Reterned_Circuit(id=ciruit["id"],title=ciruit["title"],subtitle=ciruit["subtitle"],description=ciruit["description"],duration=ciruit["duration"],difficulty=ciruit["difficulty"],price=ciruit["price"],image=ciruit["image"],itinerary = [Itinerary_Model(id=itinarary["id"],place=itinarary["place"],order_id=itinarary["order_id"],circuit_id=itinarary["circuit_id"])],equipment = [Equipement_Model(id=equipement["id"],equipment=equipement["equipment"],circuit_id=equipement["circuit_id"])],include_in_price = [Included_task_in_Price_Model(id=included["id"],content=included["content"],circuit_id=included["circuit_id"])],adrenaline=[Adrenaline_Model(id=adrenaline["id"],content=adrenaline["content"],circuit_id=adrenaline["circuit_id"])]))
             callback(Result_model_function(code=1,data=final_value_to_return,error=""))
         except Exception as Error:
+            print(Error)
             callback(Result_model_function(code=0,data=[],error=Error))

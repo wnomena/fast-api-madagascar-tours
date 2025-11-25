@@ -124,7 +124,7 @@ class Contact(Base):
 
 class Contact_Model(BaseModel):
     name:str
-    subject:str
+    subject:str | None = None
     body:str
     mail:str
     number:str | None = None

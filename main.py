@@ -1,8 +1,8 @@
 from typing import Annotated, Union
 from pydantic import BaseModel
-
 import dotenv
-from fastapi import FastAPI, Form, HTTPException,Request
+from fastapi import FastAPI, Form, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
 
 
@@ -19,6 +19,16 @@ engine = create_engine(f"mysql+pymysql://{os.getenv("USER")}:{os.getenv("PASS")}
 app = FastAPI()
 
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 def read_root():   
     try:
@@ -30,9 +40,17 @@ def read_root():
             elif x.code == 0:
                 raise Exception("Erreur lors des traitements de controlleur surement")
         Get_all_Circuit(engine,callback)
-        return data_from_database
+        return {
+            "code" : 0,
+            "data" : data_from_database,
+            "error" : ""
+        }
     except HTTPException as Err:
-        raise HTTPException(status_code=500,detail=Err)
+        raise HTTPException(status_code=500,detail={
+            "code" : 1,
+            "data" : [],
+            "error" : Err
+        })
 
 @app.post("/")
 def set_contact(Form:Annotated[Contact_Model,Form()]):
@@ -43,4 +61,8 @@ def set_contact(Form:Annotated[Contact_Model,Form()]):
         else :
             raise HTTPException(status_code=500,detail=result.error)
     except Exception as err:
-        raise HTTPException(status_code=500,detail=err)
+        raise HTTPException(status_code=500,detail={
+            "error" : err,
+            "data" : [],
+            "code" : 1
+        })
