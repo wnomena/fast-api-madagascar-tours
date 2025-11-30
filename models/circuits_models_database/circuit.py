@@ -106,8 +106,6 @@ class Adrenaline_Model:
         self.content = content
         self.circuit_id = circuit_id
 
-
-
 class Contact(Base):
     __tablename__ = "contact"
     id:Mapped[int] = mapped_column(Integer,primary_key=True)
@@ -125,12 +123,13 @@ class Contact(Base):
 class Contact_Model(BaseModel):
     name:str
     subject:str | None = None
-    body:str
+    body:str 
     mail:str
     number:str | None = None
     begining:str | None = None
     number_of_person:int | None = None
     total_price:int | None = None
+    circuit_id:int | None = None
 
 
     

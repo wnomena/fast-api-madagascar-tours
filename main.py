@@ -53,7 +53,8 @@ def read_root():
         })
 
 @app.post("/")
-def set_contact(Form:Annotated[Contact_Model,Form()]):
+def set_contact(Form:Contact_Model):
+    print(Form)
     try:
         result:Result_model_function = set_full_contact(engine,Form=Form)
         if result.code:
