@@ -47,6 +47,8 @@ class Itinerary(Base):
     id:Mapped[int] = mapped_column(Integer,primary_key=True)
     place:Mapped[str] = mapped_column(String,nullable=False)
     order_id:Mapped[int] = mapped_column(Integer,nullable=False)
+    day:Mapped[int] = mapped_column(Integer,nullable=False)
+    description:Mapped[str] = mapped_column(String,nullable=False)
     circuit_id:Mapped[int] = mapped_column(Integer,ForeignKey("circuit.id"))
     circuit = relationship("Circuit",back_populates="itinerary")
 
@@ -54,9 +56,13 @@ class Itinerary_Model:
     def __init__(self,id:int,
     place:str,
     order_id:int,
+    day:int,
+    description:str,
     circuit_id:int):
         self.id = id
         self.place = place
+        self.day = day
+        self.description = description
         self.order_id = order_id
         self.circuit_id = circuit_id
 
